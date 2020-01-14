@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -136,8 +137,10 @@ public class DealershipService implements Serializable {
 		customer.setMonthlyPayment(customer.getMonthlyPayment()+monthlyPayment);
 		customer.setMonthsToPay(months);
 		customer.setRemainingPayment(customer.getRemainingPayment()+(monthlyPayment*months));
-		for(Offer o:offers) {
-			if(o.getCar().equals(car) && o.getCustomer().equals(customer) && o.getMonthlyPayment()==monthlyPayment && o.getMonths()==months) {
+		Iterator<Offer> offerIter = offers.iterator();
+		while(offerIter.hasNext()) {
+			Offer o = offerIter.next();
+			if(o.getCar().equals(car) && o.getCustomer().equals(customer)) {
 				offers.remove(o);
 			}
 		}
