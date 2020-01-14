@@ -1,5 +1,7 @@
 package com.gavin.dealership.service;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -14,11 +16,22 @@ import com.gavin.dealership.pojo.User;
 
 public class DealershipService implements Serializable {
 
-	static List<Car> lot = new LinkedList<Car>();
+	private List<Car> lot = new LinkedList<Car>();
 
-	static Map<String, User> users = new HashMap<String, User>();
+	private Map<String, User> users = new HashMap<String, User>();
 	
-	static List<Offer> offers = new LinkedList<Offer>();
+	private List<Offer> offers = new LinkedList<Offer>();
+	
+	public DealershipService() {
+		super();
+	}
+
+	public DealershipService(List<Car> lot, Map<String, User> users, List<Offer> offers) {
+		super();
+		this.lot = lot;
+		this.users = users;
+		this.offers = offers;
+	}
 
 	public void addCar(Car car) {
 		lot.add(car);
@@ -127,6 +140,8 @@ public class DealershipService implements Serializable {
 		}
 		return total;
 	}
+	
+	
 	
 	
 

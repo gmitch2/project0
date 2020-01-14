@@ -34,6 +34,7 @@ public class DealershipSerialization implements Serializable {
 				ObjectInputStream ois = new ObjectInputStream(fis)) {
 			ret = (DealershipService) ois.readObject();
 		} catch (Exception e) {
+			System.out.println("creating new dealership");
 			return new DealershipService();
 		}
 		
