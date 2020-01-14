@@ -3,7 +3,7 @@ import org.apache.log4j.Logger;
 
 public class LoggerUtil {
 	
-	private static Logger log = Logger.getRootLogger();
+	private static Logger log = Logger.getLogger("FILE");
 	
 	public static void fatal(String m) {
 		log.fatal(m);

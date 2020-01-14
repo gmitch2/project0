@@ -7,9 +7,11 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import com.gavin.dealership.service.DealershipService;
+import com.gavin.dealership.util.LoggerUtil;
 
 public class DealershipSerialization implements Serializable {
-
+	
+	private static LoggerUtil log = new LoggerUtil();
 	
 	public void createDealership(DealershipService dealership) {
 		
@@ -18,7 +20,6 @@ public class DealershipSerialization implements Serializable {
 		try (FileOutputStream fos = new FileOutputStream(filename);
 				ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 			oos.writeObject(dealership);
-			System.out.println("saved Dealership.dat");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -35,6 +36,7 @@ public class DealershipSerialization implements Serializable {
 			ret = (DealershipService) ois.readObject();
 		} catch (Exception e) {
 			System.out.println("creating new dealership");
+			log.info("creating new dealership");
 			return new DealershipService();
 		}
 		
