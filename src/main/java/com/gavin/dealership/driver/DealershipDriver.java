@@ -2,6 +2,7 @@ package com.gavin.dealership.driver;
 
 import java.util.Scanner;
 
+import com.gavin.dealership.dao.DealershipSerialization;
 import com.gavin.dealership.pojo.Car;
 import com.gavin.dealership.pojo.Customer;
 import com.gavin.dealership.pojo.Employee;
@@ -15,7 +16,9 @@ public class DealershipDriver {
 	
 	private static LoggerUtil log = new LoggerUtil();
 	
-	private static DealershipService dealership = new DealershipService();
+	private static DealershipSerialization ds = new DealershipSerialization();
+
+	private static DealershipService dealership = ds.readDealership();
 	
 	private static User currentUser;
 	
@@ -34,6 +37,8 @@ public class DealershipDriver {
 			option = sc.nextLine();
 			performSystemAction(option);
 		} while (!"6".equals(option));
+		
+		ds.createDealership(dealership);
 	}
 
 	private static void performSystemAction(String option) {
@@ -103,7 +108,7 @@ public class DealershipDriver {
 			System.out.println("Goodbye");
 			break;
 		case "5":
-			dealership.calculateMonthlyPayment();
+			System.out.println(dealership.calculateMonthlyPayment());
 			break;
 		}
 	}

@@ -1,6 +1,8 @@
 package com.gavin.dealership.pojo;
 
-public class Car {
+import java.io.Serializable;
+
+public class Car implements Serializable{
 	
 	private String make;
 	

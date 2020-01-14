@@ -1,10 +1,10 @@
 package com.gavin.dealership.pojo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class Customer extends User {
+public class Customer extends User implements Serializable {
 	
 	private List<Car> owned = new ArrayList<Car>();
 	

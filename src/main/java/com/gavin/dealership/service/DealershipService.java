@@ -117,7 +117,7 @@ public class DealershipService implements Serializable {
 		}
 	}
 	
-	public void calculateMonthlyPayment() {
+	public int calculateMonthlyPayment() {
 		int total = 0;
 		for(Entry<String,User> e: users.entrySet()) {
 			if(e.getValue() instanceof Customer) {
@@ -125,7 +125,7 @@ public class DealershipService implements Serializable {
 				total+=c.getMonthlyPayment();
 			}
 		}
-		System.out.println(total);
+		return total;
 	}
 	
 	

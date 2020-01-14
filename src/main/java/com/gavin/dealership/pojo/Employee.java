@@ -1,6 +1,8 @@
 package com.gavin.dealership.pojo;
 
-public class Employee extends User {
+import java.io.Serializable;
+
+public class Employee extends User implements Serializable {
 
 	
 	
