@@ -1,15 +1,18 @@
 package com.gavin.dealership.service;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.gavin.dealership.pojo.Car;
+import com.gavin.dealership.pojo.Customer;
 import com.gavin.dealership.pojo.Offer;
 import com.gavin.dealership.pojo.User;
 
-public class DealershipService {
+public class DealershipService implements Serializable {
 
 	static List<Car> lot = new LinkedList<Car>();
 
@@ -30,7 +33,7 @@ public class DealershipService {
 		if(user==null) {
 			return false;
 		} else {
-			return user.getPassword()==password;
+			return user.getPassword().equals(password);
 		}
 	}
 
@@ -49,8 +52,9 @@ public class DealershipService {
 	}
 
 	public void listCars() {
-		// TODO Auto-generated method stub
-		
+		for(Car c:lot) {
+			System.out.println(c);
+		}
 	}
 
 	public Car getCar(String make, String model, int year) {
@@ -70,18 +74,58 @@ public class DealershipService {
 	}
 
 	public void listOffers() {
-		// TODO Auto-generated method stub
-		
+		for(Offer o:offers) {
+			System.out.println(o);
+		}
 	}
 
 	public void listPayments() {
-		// TODO Auto-generated method stub
-		
+		for(Entry<String,User> e: users.entrySet()) {
+			if(e.getValue() instanceof Customer) {
+				Customer c = (Customer) e.getValue();
+				System.out.println(c.getUsername()+"'s Monthly Payment: "+c.getMonthlyPayment());
+			}
+		}
 	}
 
-	public void addOffer(User user,Car car,int offer) {
-		// TODO Auto-generated method stub
+	public void addOffer(User user,Car car,int monthlyPayment,int months) {
+		offers.add(new Offer(car,monthlyPayment,months,(Customer)user));
+	}
+
+	public void acceptOffer(String username, Car car, int monthlyPayment, int months) {
 		
+		Customer customer = (Customer)users.get(username);
+		customer.addCar(car);
+		customer.setMonthlyPayment(customer.getMonthlyPayment()+monthlyPayment);
+		customer.setMonthsToPay(months);
+		customer.setRemainingPayment(customer.getRemainingPayment()+(monthlyPayment*months));
+		for(Offer o:offers) {
+			if(o.getCar().equals(car) && o.getCustomer().equals(customer) && o.getMonthlyPayment()==monthlyPayment && o.getMonths()==months) {
+				offers.remove(o);
+			}
+		}
+		lot.remove(car);
+		
+	}
+	
+	public void rejectOffer(String username, Car car, int monthlyPayment, int months) {
+		Customer customer = (Customer)users.get(username);
+		for(Offer o:offers) {
+			if(o.getCar().equals(car) && o.getCustomer().equals(customer) && o.getMonthlyPayment()==monthlyPayment && o.getMonths()==months) {
+				offers.remove(o);
+			}
+		}
+	}
+	
+	public void calculateMonthlyPayment() {
+		int total = 0;
+		for(Entry<String,User> e: users.entrySet()) {
+			if(e.getValue() instanceof Customer) {
+				Customer c = (Customer) e.getValue();
+				total+=c.getMonthlyPayment();
+			}
+		}
+		System.out.println(total);
 	}
 	
 	
