@@ -46,7 +46,7 @@ public class Offer implements Serializable{
 
 	@Override
 	public String toString() {
-		return customer.getUsername()+" offered a bid of: $" + monthlyPayment + "for "+months+" months for " + car;
+		return customer.getUsername()+" offered a bid of: $" + monthlyPayment + " for "+months+" months for " + car;
 	}
 
 	public Offer(Car car, int monthlyPayment, int months, Customer customer) {

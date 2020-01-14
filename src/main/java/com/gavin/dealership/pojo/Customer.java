@@ -88,6 +88,28 @@ public class Customer extends User implements Serializable {
 		return true;
 	}
 
+	public int makePayment() {
+		if(this.remainingPayment==0) {
+			this.remainingPayment=0;
+			this.monthsToPay=0;
+			this.monthlyPayment=0;
+			return 0;
+		} else {
+			int updatedRemaining=this.remainingPayment-monthlyPayment;
+			if(updatedRemaining<0) {
+				this.remainingPayment=0;
+			} else {
+				this.remainingPayment=updatedRemaining;
+			}
+			if(this.monthsToPay>0) {
+				this.monthsToPay-=1;
+			} else {
+				this.monthsToPay=0;
+			}
+		}
+		return this.remainingPayment;
+	}
+
 	
 	
 	

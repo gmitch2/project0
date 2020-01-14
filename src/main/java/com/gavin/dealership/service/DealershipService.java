@@ -33,6 +33,30 @@ public class DealershipService implements Serializable {
 		this.offers = offers;
 	}
 
+	public List<Car> getLot() {
+		return lot;
+	}
+
+	public void setLot(List<Car> lot) {
+		this.lot = lot;
+	}
+
+	public Map<String, User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Map<String, User> users) {
+		this.users = users;
+	}
+
+	public List<Offer> getOffers() {
+		return offers;
+	}
+
+	public void setOffers(List<Offer> offers) {
+		this.offers = offers;
+	}
+
 	public void addCar(Car car) {
 		lot.add(car);
 	}
@@ -141,7 +165,9 @@ public class DealershipService implements Serializable {
 		return total;
 	}
 	
-	
+	public int makePayment(Customer customer) {
+		return customer.makePayment();
+	}
 	
 	
 

@@ -20,7 +20,7 @@ public class DealershipDriver {
 
 	private static DealershipService dealership = ds.readDealership();
 	
-	private static User currentUser;
+	private transient static User currentUser;
 	
 	public static void main(String[] args) {
 		String option = "";
@@ -39,6 +39,7 @@ public class DealershipDriver {
 		} while (!"6".equals(option));
 		
 		ds.createDealership(dealership);
+		log.info("Dealership.dat was updated");
 	}
 
 	private static void performSystemAction(String option) {
@@ -74,11 +75,12 @@ public class DealershipDriver {
 						System.out.println("[2] Make offer");
 						System.out.println("[3] View my cars");
 						System.out.println("[4] Remaining payments");
-						System.out.println("[5] Logout");
+						System.out.println("[5] Make payment");
+						System.out.println("[6] Logout");
 
 						customerOption = sc.nextLine();
 						performCustomerAction(customerOption);
-					} while (!"5".equals(customerOption));
+					} while (!"6".equals(customerOption));
 				} else if (currentUser instanceof Employee) {
 						String employeeOption = "";
 
@@ -212,6 +214,9 @@ public class DealershipDriver {
 			System.out.println(((Customer)currentUser).getRemainingPayment());
 			break;
 		case "5":
+			((Customer)currentUser).makePayment();
+			break;
+		case "6":
 			System.out.println("Goodbye");
 			break;
 		}

@@ -2,6 +2,9 @@ package com.gavin.dealership.test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -70,6 +73,68 @@ public class CarDealershipTest {
 		int monthlyPayment = 500;
 		int months = 10;
 		dealership.addOffer(customer, car, monthlyPayment, months);
+		List<Offer> offers = dealership.getOffers();
+		List<Offer> offersTest = new LinkedList<Offer>();
+		offersTest.add(new Offer(car,monthlyPayment,months,customer));
+		assertEquals(offers,offersTest);
 	}
+	
+	@Test
+	public void acceptOfferTest() {
+		Customer customer = new Customer("gavin","123");
+		Car car = new Car("toyota","prius",2015,5000);
+		dealership.addUser(customer);
+		dealership.addOffer(customer, car, 500, 10);
+		dealership.acceptOffer("gavin", car, 500, 10);
+		assertEquals(dealership.getOffers().size(),0);
+	}
+	
+	@Test
+	public void rejectOfferTest() {
+		Customer customer = new Customer("gavin","123");
+		Car car = new Car("toyota","prius",2015,5000);
+		dealership.addUser(customer);
+		dealership.addOffer(customer, car, 500, 10);
+		dealership.rejectOffer("gavin", car, 500, 10);
+		assertEquals(dealership.getOffers().size(),0);
+	}
+	
+	@Test
+	public void makePaymentTest() {
+		Customer customer = new Customer("gavin","123");
+		Car car = new Car("toyota","prius",2015,5000);
+		dealership.addUser(customer);
+		dealership.addOffer(customer, car, 500, 10);
+		dealership.acceptOffer("gavin", car, 500, 10);
+		dealership.makePayment(customer);
+		assertEquals(customer.getRemainingPayment(),4500);
+	}
+	
+	@Test
+	public void overPayingTest() {
+		Customer customer = new Customer("gavin","123");
+		Car car = new Car("toyota","prius",2015,5000);
+		dealership.addUser(customer);
+		dealership.addOffer(customer, car, 500, 10);
+		dealership.acceptOffer("gavin", car, 500, 10);
+		for(int i=0; i<11;i++) {
+			dealership.makePayment(customer);
+		}
+		assertEquals(customer.getRemainingPayment(),0);
+	}
+	
+	@Test
+	public void totalMonthlyPaymentTest() {
+		Customer customer = new Customer("gavin","123");
+		Car car = new Car("toyota","prius",2015,5000);
+		Car car2 = new Car("honda","accord",2016,10000);
+		dealership.addUser(customer);
+		dealership.addOffer(customer, car, 500, 10);
+		dealership.addOffer(customer, car2, 1000, 10);
+		dealership.acceptOffer("gavin", car, 500, 10);
+		dealership.acceptOffer("gavin", car2, 1000, 10);
+		assertEquals(dealership.calculateMonthlyPayment(),1500);
+	}
+	
 
 }
