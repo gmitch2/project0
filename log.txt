@@ -1,2 +1,4 @@
 2020-01-14 16:43:31 INFO  FILE:21 - Dealership.dat was updated
 2020-01-14 16:46:34 INFO  FILE:21 - Dealership.dat was updated
+2020-01-14 16:48:16 INFO  FILE:21 - creating new dealership
+2020-01-14 16:49:12 INFO  FILE:21 - Dealership.dat was updated
