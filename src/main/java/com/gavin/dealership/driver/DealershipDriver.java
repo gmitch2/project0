@@ -34,7 +34,7 @@ public class DealershipDriver {
 			System.out.println("[5] Get total monthly payment");
 			System.out.println("[6] Exit");
 
-			option = sc.nextLine();
+			option = sc.next();
 			performSystemAction(option);
 		} while (!"6".equals(option));
 		
@@ -46,23 +46,23 @@ public class DealershipDriver {
 		switch(option) {
 		case "3":
 			System.out.println("Username: ");
-			String username = sc.nextLine().trim();
+			String username = sc.next().trim();
 			System.out.println("Password: ");
-			String password = sc.nextLine().trim();
+			String password = sc.next().trim();
 			dealership.addUser(new Customer(username,password));
 			break;
 		case "2":
 			System.out.println("Username: ");
-			username = sc.nextLine().trim();
+			username = sc.next().trim();
 			System.out.println("Password: ");
-			password = sc.nextLine().trim();
+			password = sc.next().trim();
 			dealership.addUser(new Employee(username,password));
 			break;
 		case "1":
 			System.out.println("Username: ");
-			username = sc.nextLine().trim();
+			username = sc.next().trim();
 			System.out.println("Password: ");
-			password = sc.nextLine().trim();
+			password = sc.next().trim();
 			if(dealership.authenticateUser(username,password)) {
 				System.out.println("Login successful!");
 				currentUser = dealership.getUser(username);
@@ -78,7 +78,7 @@ public class DealershipDriver {
 						System.out.println("[5] Make payment");
 						System.out.println("[6] Logout");
 
-						customerOption = sc.nextLine();
+						customerOption = sc.next();
 						performCustomerAction(customerOption);
 					} while (!"6".equals(customerOption));
 				} else if (currentUser instanceof Employee) {
@@ -93,7 +93,7 @@ public class DealershipDriver {
 							System.out.println("[5] View all payments");
 							System.out.println("[6] Logout");
 
-							employeeOption = sc.nextLine();
+							employeeOption = sc.next();
 							performEmployeeAction(employeeOption);
 						} while (!"6".equals(employeeOption));
 				}
@@ -142,7 +142,7 @@ public class DealershipDriver {
 			break;
 		case "4":
 			dealership.listOffers();
-			System.out.println("Would you like to accept (a) or reject (r) an offer?");
+			System.out.println("Would you like to accept (a) or reject (r) an offer or neither (n)?");
 			String offerInput = sc.next();
 			switch(offerInput){
 			case "a":
@@ -174,6 +174,8 @@ public class DealershipDriver {
 				System.out.println("Months: ");
 				months = sc.nextInt();
 				dealership.rejectOffer(username, dealership.getCar(make, model, year), monthlyPayment, months);
+				break;
+			default:
 				break;
 			}
 			break;
