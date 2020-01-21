@@ -36,3 +36,4 @@
 2020-01-20 23:05:21 INFO  FILE:21 - Dealership.dat was updated
 2020-01-21 09:49:47 INFO  FILE:21 - Dealership.dat was updated
 2020-01-21 11:24:53 INFO  FILE:21 - added payment fro userid: 4for $1875.03
+2020-01-21 12:59:46 INFO  FILE:21 - added offer for 10000.0

@@ -1,5 +1,6 @@
 package com.gavin.dealership.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -90,18 +91,13 @@ public class OfferDAO {
 	public static void acceptOffer(int offerid) {
 		Connection conn = ConnectionFactory.getConnection();
 		
-		String sql = "update dealership.offers set offer_status=-1 where carid=(select carid from dealership.offers o where o.offerid=?)";
-		
-		String sql2 = "update dealership.offers set offer_status=1 where offerid=?";
+		String sql = "call accept_offer(?)";
 		
 		
-		PreparedStatement stmt = null;
+		CallableStatement stmt = null;
 		
 		try {
-			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, offerid);
-			stmt.executeUpdate();
-			stmt = conn.prepareStatement(sql2);
+			stmt = conn.prepareCall(sql);
 			stmt.setInt(1, offerid);
 			stmt.executeUpdate();
 		} catch (SQLException e) {

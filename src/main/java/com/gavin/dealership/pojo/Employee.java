@@ -42,8 +42,6 @@ public class Employee extends User implements Serializable {
 				customer.setMonthlyPayment(customer.getMonthlyPayment()+(amount/24.0));
 				customer.setRemainingBalance(customer.getRemainingBalance()+amount);
 				
-				CarDAO.changeOwner(carid, userid);
-				
 				OfferDAO.acceptOffer(offerid);
 			}
 		} catch (SQLException e) {
