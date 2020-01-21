@@ -1,12 +1,7 @@
 package com.gavin.dealership.service;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +14,6 @@ import com.gavin.dealership.pojo.Car;
 import com.gavin.dealership.pojo.Customer;
 import com.gavin.dealership.pojo.Offer;
 import com.gavin.dealership.pojo.User;
-import com.gavin.dealership.util.ConnectionFactory;
 
 public class DealershipService implements Serializable {
 
@@ -65,7 +59,7 @@ public class DealershipService implements Serializable {
 	}
 
 	public void addCar(Car car) {
-		//lot.add(car);
+		// lot.add(car);
 
 		CarDAO.addCar(car);
 
@@ -77,7 +71,7 @@ public class DealershipService implements Serializable {
 
 	public boolean authenticateUser(String username, String password) {
 		User user = UserDAO.getUser(username);
-		if(user==null) {
+		if (user == null) {
 			return false;
 		} else {
 			return user.getPassword().equals(password);
@@ -135,11 +129,12 @@ public class DealershipService implements Serializable {
 		return null;
 	}
 
-	public void removeCar(String make, String model, int year) {
-		Car car = getCar(make, model, year);
-		if (car != null) {
-			lot.remove(car);
-		}
+	public void removeCar(int carid) {
+//		Car car = getCar(make, model, year);
+//		if (car != null) {
+//			lot.remove(car);
+//		}
+		CarDAO.removeCar(carid);
 	}
 
 	public void listOffers() {

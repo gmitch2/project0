@@ -186,7 +186,7 @@ public class UserDAO {
 			stmt.setBoolean(3, isEmployee);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Failed to create user");
 		} finally {
 			try {
 				conn.close();

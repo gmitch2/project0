@@ -3,7 +3,6 @@ package com.gavin.dealership.driver;
 import java.util.Scanner;
 
 import com.gavin.dealership.dao.CarDAO;
-import com.gavin.dealership.dao.DealershipSerialization;
 import com.gavin.dealership.dao.OfferDAO;
 import com.gavin.dealership.dao.PaymentDAO;
 import com.gavin.dealership.dao.UserDAO;
@@ -12,15 +11,16 @@ import com.gavin.dealership.pojo.Customer;
 import com.gavin.dealership.pojo.Employee;
 import com.gavin.dealership.pojo.User;
 import com.gavin.dealership.service.DealershipService;
-import com.gavin.dealership.util.LoggerUtil;
 
 public class DealershipDriver {
 	
 	private static Scanner sc = new Scanner(System.in);
 	
-	private static DealershipSerialization ds = new DealershipSerialization();
+	//private static DealershipSerialization ds = new DealershipSerialization();
 
-	private static DealershipService dealership = ds.readDealership();
+	//private static DealershipService dealership = ds.readDealership();
+	
+	private static DealershipService dealership = new DealershipService();
 	
 	private transient static User currentUser;
 	
@@ -39,8 +39,8 @@ public class DealershipDriver {
 			performSystemAction(option);
 		} while (!"5".equals(option));
 		
-		ds.createDealership(dealership);
-		LoggerUtil.info("Dealership.dat was updated");
+//		ds.createDealership(dealership);
+//		LoggerUtil.info("Dealership.dat was updated");
 	}
 
 	private static void performSystemAction(String option) {
@@ -126,17 +126,13 @@ public class DealershipDriver {
 			System.out.println("What is the model of the car");
 			String model = sc.next();
 			System.out.println("What is the cost of the car");
-			int cost = sc.nextInt();
+			double cost = sc.nextDouble();
 			dealership.addCar(new Car(make,model,year,cost));
 			break;
 		case "3":
-			System.out.println("What year is the car?");
-			year = sc.nextInt();
-			System.out.println("What is the make of the car");
-			make = sc.next();
-			System.out.println("What is the model of the car");
-			model = sc.next();
-			dealership.removeCar(make,model,year);
+			System.out.println("Which car would you like to remove? (please type the Car ID)");
+			int carid = sc.nextInt();
+			dealership.removeCar(carid);
 			break;
 		case "4":
 			OfferDAO.listOffers();

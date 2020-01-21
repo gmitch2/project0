@@ -10,7 +10,7 @@ public class Car implements Serializable{
 	
 	private int year;
 	
-	private int cost;
+	private double cost;
 
 	public String getMake() {
 		return make;
@@ -36,15 +36,15 @@ public class Car implements Serializable{
 		this.year = year;
 	}
 
-	public int getCost() {
+	public double getCost() {
 		return cost;
 	}
 
-	public void setCost(int cost) {
+	public void setCost(double cost) {
 		this.cost = cost;
 	}
 
-	public Car(String make, String model, int year, int cost) {
+	public Car(String make, String model, int year, double cost) {
 		super();
 		this.make = make;
 		this.model = model;
@@ -61,7 +61,7 @@ public class Car implements Serializable{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + cost;
+		result = prime * result + (int)cost;
 		result = prime * result + ((make == null) ? 0 : make.hashCode());
 		result = prime * result + ((model == null) ? 0 : model.hashCode());
 		result = prime * result + year;

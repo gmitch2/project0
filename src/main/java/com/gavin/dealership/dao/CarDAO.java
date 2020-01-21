@@ -22,7 +22,7 @@ public class CarDAO {
 			stmt.setString(1, car.getMake());
 			stmt.setString(2, car.getModel());
 			stmt.setInt(3, car.getYear());
-			stmt.setInt(4, car.getCost());
+			stmt.setDouble(4, car.getCost());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
