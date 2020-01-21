@@ -9,6 +9,7 @@ import com.gavin.dealership.pojo.Customer;
 import com.gavin.dealership.pojo.Employee;
 import com.gavin.dealership.pojo.User;
 import com.gavin.dealership.util.ConnectionFactory;
+import com.gavin.dealership.util.LoggerUtil;
 
 public class UserDAO {
 	
@@ -162,6 +163,7 @@ public class UserDAO {
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, username);
 			stmt.executeUpdate();
+			LoggerUtil.info("removed user "+username);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -185,6 +187,7 @@ public class UserDAO {
 			stmt.setString(2, user.getPassword());
 			stmt.setBoolean(3, isEmployee);
 			stmt.executeUpdate();
+			LoggerUtil.info("added user "+user.getUsername());
 		} catch (SQLException e) {
 			System.out.println("Failed to create user");
 		} finally {

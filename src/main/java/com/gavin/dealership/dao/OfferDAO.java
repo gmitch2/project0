@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.gavin.dealership.util.ConnectionFactory;
+import com.gavin.dealership.util.LoggerUtil;
 
 public class OfferDAO {
 	
@@ -22,6 +23,7 @@ public class OfferDAO {
 			stmt.setInt(2, userid);
 			stmt.setDouble(3, amount);
 			stmt.executeUpdate();
+			LoggerUtil.info("added offer for "+amount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -46,6 +48,7 @@ public class OfferDAO {
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, offerid);
 			stmt.executeUpdate();
+			LoggerUtil.info("removed offer, offerid: "+offerid);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

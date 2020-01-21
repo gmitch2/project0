@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import com.gavin.dealership.pojo.Car;
 import com.gavin.dealership.util.ConnectionFactory;
+import com.gavin.dealership.util.LoggerUtil;
 
 public class CarDAO {
 	
@@ -24,6 +25,7 @@ public class CarDAO {
 			stmt.setInt(3, car.getYear());
 			stmt.setDouble(4, car.getCost());
 			stmt.executeUpdate();
+			LoggerUtil.info("added car "+car);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -46,6 +48,7 @@ public class CarDAO {
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, carid);
 			stmt.executeUpdate();
+			LoggerUtil.info("removed car, carid: "+carid);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

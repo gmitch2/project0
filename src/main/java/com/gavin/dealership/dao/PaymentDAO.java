@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.gavin.dealership.util.ConnectionFactory;
+import com.gavin.dealership.util.LoggerUtil;
 
 public class PaymentDAO {
 	
@@ -21,6 +22,7 @@ public class PaymentDAO {
 			stmt.setDouble(1, amount);
 			stmt.setInt(2, userid);
 			stmt.executeUpdate();
+			LoggerUtil.info("added payment for userid: "+userid+" for $"+amount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
