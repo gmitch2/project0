@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import com.gavin.dealership.pojo.Car;
 import com.gavin.dealership.pojo.Customer;
+import com.gavin.dealership.pojo.Employee;
 import com.gavin.dealership.pojo.Offer;
 import com.gavin.dealership.pojo.User;
 import com.gavin.dealership.service.DealershipService;
@@ -41,7 +42,7 @@ public class CarDealershipTest {
 	@Test
 	public void addUserTest() {
 		User u = new User("gavin","123");
-		dealership.addUser(u);
+		dealership.addUser(u,true);
 		assertEquals(dealership.getUser("gavin"),u);
 	}
 	
@@ -55,14 +56,14 @@ public class CarDealershipTest {
 	@Test
 	public void authenticateUserTest() {
 		User u = new User("gavin","123");
-		dealership.addUser(u);
+		dealership.addUser(u,true);
 		assertEquals(dealership.authenticateUser("gavin", "123"),true);
 	}
 	
 	@Test
 	public void authenticateUserFailTest() {
 		User u = new User("gavin","123");
-		dealership.addUser(u);
+		dealership.addUser(u,true);
 		assertEquals(dealership.authenticateUser("gavin", "1234"),false);
 	}
 	
@@ -82,10 +83,11 @@ public class CarDealershipTest {
 	@Test
 	public void acceptOfferTest() {
 		Customer customer = new Customer("gavin","123");
+		Employee emp = new Employee("joe","1234");
 		Car car = new Car("toyota","prius",2015,5000);
-		dealership.addUser(customer);
+		dealership.addUser(customer,false);
 		dealership.addOffer(customer, car, 500, 10);
-		dealership.acceptOffer("gavin", car, 500, 10);
+		emp.acceptOffer(1);
 		assertEquals(dealership.getOffers().size(),0);
 	}
 	
@@ -93,46 +95,49 @@ public class CarDealershipTest {
 	public void rejectOfferTest() {
 		Customer customer = new Customer("gavin","123");
 		Car car = new Car("toyota","prius",2015,5000);
-		dealership.addUser(customer);
+		dealership.addUser(customer,false);
 		dealership.addOffer(customer, car, 500, 10);
-		dealership.rejectOffer("gavin", car, 500, 10);
+		dealership.rejectOffer(1);
 		assertEquals(dealership.getOffers().size(),0);
 	}
 	
 	@Test
 	public void makePaymentTest() {
 		Customer customer = new Customer("gavin","123");
+		Employee emp = new Employee("joe","1234");
 		Car car = new Car("toyota","prius",2015,5000);
-		dealership.addUser(customer);
+		dealership.addUser(customer,false);
 		dealership.addOffer(customer, car, 500, 10);
-		dealership.acceptOffer("gavin", car, 500, 10);
+		emp.acceptOffer(1);
 		dealership.makePayment(customer);
-		assertEquals(customer.getRemainingPayment(),4500);
+		assertEquals(customer.getRemainingBalance(),4500);
 	}
 	
 	@Test
 	public void overPayingTest() {
 		Customer customer = new Customer("gavin","123");
+		Employee emp = new Employee("joe","1234");
 		Car car = new Car("toyota","prius",2015,5000);
-		dealership.addUser(customer);
+		dealership.addUser(customer,false);
 		dealership.addOffer(customer, car, 500, 10);
-		dealership.acceptOffer("gavin", car, 500, 10);
+		emp.acceptOffer(1);
 		for(int i=0; i<11;i++) {
 			dealership.makePayment(customer);
 		}
-		assertEquals(customer.getRemainingPayment(),0);
+		assertEquals(customer.getRemainingBalance(),0);
 	}
 	
 	@Test
 	public void totalMonthlyPaymentTest() {
 		Customer customer = new Customer("gavin","123");
+		Employee emp = new Employee("joe","1234");
 		Car car = new Car("toyota","prius",2015,5000);
 		Car car2 = new Car("honda","accord",2016,10000);
-		dealership.addUser(customer);
+		dealership.addUser(customer,false);
 		dealership.addOffer(customer, car, 500, 10);
 		dealership.addOffer(customer, car2, 1000, 10);
-		dealership.acceptOffer("gavin", car, 500, 10);
-		dealership.acceptOffer("gavin", car2, 1000, 10);
+		emp.acceptOffer(1);
+		emp.acceptOffer(2);
 		assertEquals(dealership.calculateMonthlyPayment(),1500);
 	}
 	

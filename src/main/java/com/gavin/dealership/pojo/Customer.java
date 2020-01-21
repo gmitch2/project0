@@ -1,37 +1,116 @@
 package com.gavin.dealership.pojo;
 
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.gavin.dealership.dao.PaymentDAO;
+import com.gavin.dealership.dao.UserDAO;
+import com.gavin.dealership.util.ConnectionFactory;
 
 public class Customer extends User implements Serializable {
 	
 	private List<Car> owned = new ArrayList<Car>();
 	
-	private int remainingPayment;
+	private double remainingBalance;
 	
 	private int monthsToPay;
 	
-	private int monthlyPayment;
+	private double monthlyPayment;
 	
 	public void addCar(Car car) {
 		owned.add(car);
 	}
 
-	public List<Car> getOwned() {
-		return owned;
+	public void getOwned() {
+		
+		Connection conn = ConnectionFactory.getConnection();
+		
+		String sql = "select * from dealership.cars c where c.owned_by = ?";
+		
+		PreparedStatement stmt = null;
+		
+		ResultSet res = null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, UserDAO.getUserId(this.getUsername()));
+			res = stmt.executeQuery();
+			while(res.next()) {
+				System.out.println("["+res.getInt("carid")+"] "+res.getInt("year")+" "+res.getString("make")+" "+res.getString("model"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 
 	public void setOwned(List<Car> owned) {
 		this.owned = owned;
 	}
 
-	public int getRemainingPayment() {
-		return remainingPayment;
+	public double getRemainingBalance() {
+		Connection conn = ConnectionFactory.getConnection();
+		
+		String sql = "select * from dealership.users u where u.username = ?";
+		
+		PreparedStatement stmt = null;
+		
+		ResultSet res = null;
+		
+		double remainingBalance = 0;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, this.getUsername());
+			res = stmt.executeQuery();
+			if(res.next()) {
+				remainingBalance = res.getDouble("remaining_balance");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return remainingBalance;
 	}
 
-	public void setRemainingPayment(int remainingPayment) {
-		this.remainingPayment = remainingPayment;
+	public void setRemainingBalance(double remainingBalance) {
+		Connection conn = ConnectionFactory.getConnection();
+		
+		String sql = "update dealership.users set remaining_balance=? where username=?";
+		
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setDouble(1, remainingBalance);
+			stmt.setString(2, this.getUsername());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 
 	public int getMonthsToPay() {
@@ -42,12 +121,57 @@ public class Customer extends User implements Serializable {
 		this.monthsToPay = monthsToPay;
 	}
 
-	public int getMonthlyPayment() {
+	public double getMonthlyPayment() {
+		Connection conn = ConnectionFactory.getConnection();
+		
+		String sql = "select * from dealership.users u where u.username = ?";
+		
+		PreparedStatement stmt = null;
+		
+		ResultSet res = null;
+		
+		double monthlyPayment = 0;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, this.getUsername());
+			res = stmt.executeQuery();
+			if(res.next()) {
+				monthlyPayment = res.getDouble("monthly_payment");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		return monthlyPayment;
 	}
 
-	public void setMonthlyPayment(int monthlyPayment) {
-		this.monthlyPayment = monthlyPayment;
+	public void setMonthlyPayment(double monthlyPayment) {
+		Connection conn = ConnectionFactory.getConnection();
+		
+		String sql = "update dealership.users set monthly_payment=? where username=?";
+		
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setDouble(1, monthlyPayment);
+			stmt.setString(2, this.getUsername());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public Customer(String username, String password) {
@@ -57,12 +181,12 @@ public class Customer extends User implements Serializable {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
+		double result = super.hashCode();
 		result = prime * result + monthlyPayment;
 		result = prime * result + monthsToPay;
 		result = prime * result + ((owned == null) ? 0 : owned.hashCode());
-		result = prime * result + remainingPayment;
-		return result;
+		result = prime * result + remainingBalance;
+		return (int)result;
 	}
 
 	@Override
@@ -83,23 +207,23 @@ public class Customer extends User implements Serializable {
 				return false;
 		} else if (!owned.equals(other.owned))
 			return false;
-		if (remainingPayment != other.remainingPayment)
+		if (remainingBalance != other.remainingBalance)
 			return false;
 		return true;
 	}
 
-	public int makePayment() {
-		if(this.remainingPayment==0) {
-			this.remainingPayment=0;
+	public double makePayment() {
+		if(this.getRemainingBalance()==0) {
+			this.setRemainingBalance(0);
 			this.monthsToPay=0;
-			this.monthlyPayment=0;
+			this.setMonthlyPayment(0);
 			return 0;
 		} else {
-			int updatedRemaining=this.remainingPayment-monthlyPayment;
+			double updatedRemaining=this.getRemainingBalance()-this.getMonthlyPayment();
 			if(updatedRemaining<0) {
-				this.remainingPayment=0;
+				this.setRemainingBalance(0);
 			} else {
-				this.remainingPayment=updatedRemaining;
+				this.setRemainingBalance(updatedRemaining);
 			}
 			if(this.monthsToPay>0) {
 				this.monthsToPay-=1;
@@ -107,7 +231,10 @@ public class Customer extends User implements Serializable {
 				this.monthsToPay=0;
 			}
 		}
-		return this.remainingPayment;
+		
+		PaymentDAO.addPayment(UserDAO.getUserId(this.getUsername()),this.getMonthlyPayment());
+		
+		return this.getRemainingBalance();
 	}
 
 	
